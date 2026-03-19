@@ -1,92 +1,70 @@
-import { Link } from 'react-router-dom';
-import { FaYoutube, FaDiscord, FaLinkedinIn, FaInstagram, FaTelegramPlane } from 'react-icons/fa';
+import { FaYoutube, FaDiscord, FaLinkedinIn, FaInstagram, FaTelegramPlane, FaWhatsapp } from 'react-icons/fa';
 import { FaXTwitter } from 'react-icons/fa6';
 import { useTheme } from '../../context/ThemeContext';
 
 const socialLinks = [
-  { icon: FaYoutube, href: 'https://youtube.com/@CodeHarmonydev', label: 'YouTube', color: 'hover:text-red-500' },
-  { icon: FaDiscord, href: 'https://discord.gg/p3vtnzFbn5', label: 'Discord', color: 'hover:text-indigo-400' },
-  { icon: FaLinkedinIn, href: 'https://www.linkedin.com/company/codeharmonydev/', label: 'LinkedIn', color: 'hover:text-blue-500' },
-  { icon: FaXTwitter, href: 'https://x.com/codeharmonyHQ', label: 'X', color: 'hover:text-gray-100' },
-  { icon: FaInstagram, href: 'https://instagram.com/codeharmony.dev', label: 'Instagram', color: 'hover:text-pink-500' },
-  { icon: FaTelegramPlane, href: 'https://t.me/codeharmonydev', label: 'Telegram', color: 'hover:text-sky-400' },
+  { icon: FaLinkedinIn, href: 'https://www.linkedin.com/company/codeharmonydev/', label: 'LinkedIn', hoverColor: 'hover:text-[#0077B5]' },
+  { icon: FaXTwitter, href: 'https://x.com/codeharmonyHQ', label: 'X', hoverColor: 'hover:text-white' },
+  { icon: FaYoutube, href: 'https://youtube.com/@CodeHarmonydev', label: 'YouTube', hoverColor: 'hover:text-[#FF0000]' },
+  { icon: FaDiscord, href: 'https://discord.gg/p3vtnzFbn5', label: 'Discord', hoverColor: 'hover:text-[#7289DA]' },
+  { icon: FaInstagram, href: 'https://instagram.com/codeharmony.dev', label: 'Instagram', hoverColor: 'hover:text-[#E4405F]' },
+  { icon: FaTelegramPlane, href: 'https://t.me/codeharmonydev', label: 'Telegram', hoverColor: 'hover:text-[#0088cc]' },
 ];
 
-const quickLinks = [
-  { name: 'Home', path: '/' },
-  { name: 'Mentors', path: '/mentors' },
-  { name: 'DSA Sheet', path: '/dsa' },
-  { name: 'About', path: '/about' },
-  { name: 'Contact', path: '/contact' },
-];
+const whatsappLink = 'https://wa.me/919876543210';
 
 export default function Footer() {
   const { isDark } = useTheme();
 
   return (
-    <footer className={`border-t ${isDark ? 'bg-gray-950 border-gray-800' : 'bg-gray-50 border-gray-200'}`}>
-      <div className="max-w-7xl mx-auto px-4 py-12">
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-          {/* Brand */}
-          <div>
-            <h3 className="text-xl font-bold bg-gradient-to-r from-red-500 to-orange-500 bg-clip-text text-transparent mb-3">
-              Code Harmony
-            </h3>
-            <p className={`text-sm ${isDark ? 'text-gray-400' : 'text-gray-600'}`}>
-              Empowering developers to crack coding interviews with expert mentorship and structured preparation.
-            </p>
-            <p className={`text-sm mt-3 ${isDark ? 'text-gray-500' : 'text-gray-500'}`}>
-              ✉️ <a href="mailto:codeharmonyofficial@gmail.com" className={`no-underline ${isDark ? 'text-gray-400 hover:text-white' : 'text-gray-600 hover:text-gray-900'}`}>
-                codeharmonyofficial@gmail.com
-              </a>
-            </p>
-          </div>
-
-          {/* Quick Links */}
-          <div>
-            <h4 className={`font-semibold mb-3 ${isDark ? 'text-white' : 'text-gray-900'}`}>Quick Links</h4>
-            <ul className="space-y-2 list-none p-0 m-0">
-              {quickLinks.map((link) => (
-                <li key={link.path}>
-                  <Link
-                    to={link.path}
-                    className={`text-sm no-underline transition-colors ${isDark ? 'text-gray-400 hover:text-white' : 'text-gray-600 hover:text-gray-900'}`}
-                  >
-                    {link.name}
-                  </Link>
-                </li>
-              ))}
-            </ul>
-          </div>
-
-          {/* Social */}
-          <div>
-            <h4 className={`font-semibold mb-3 ${isDark ? 'text-white' : 'text-gray-900'}`}>Connect</h4>
-            <div className="flex gap-3">
-              {socialLinks.map((social) => (
-                <a
-                  key={social.label}
-                  href={social.href}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className={`p-2 rounded-lg transition-colors no-underline ${
-                    isDark
-                      ? 'text-gray-400 bg-gray-800 hover:bg-gray-700'
-                      : 'text-gray-500 bg-gray-200 hover:bg-gray-300'
-                  } ${social.color}`}
-                  aria-label={social.label}
-                >
-                  <social.icon size={18} />
-                </a>
-              ))}
-            </div>
-          </div>
-        </div>
-
-        <div className={`mt-8 pt-6 border-t text-center text-sm ${isDark ? 'border-gray-800 text-gray-500' : 'border-gray-200 text-gray-400'}`}>
-          © 2025 Code Harmony. All rights reserved.
-        </div>
+    <footer className={`py-6 text-center ${isDark ? 'bg-gray-950' : 'bg-white'}`}>
+      {/* Social Icons Row */}
+      <div className="flex justify-center items-center gap-4 mb-4">
+        {socialLinks.map((social) => (
+          <a
+            key={social.label}
+            href={social.href}
+            target="_blank"
+            rel="noopener noreferrer"
+            className={`text-2xl transition-transform duration-300 hover:scale-125 no-underline ${
+              isDark ? 'text-gray-400' : 'text-gray-500'
+            } ${social.hoverColor}`}
+            aria-label={social.label}
+          >
+            <social.icon />
+          </a>
+        ))}
       </div>
+
+      {/* Contact Us Button */}
+      <div className="mb-4">
+        <a
+          href="mailto:codeharmonyofficial@gmail.com"
+          className={`inline-block px-6 py-2 rounded-lg text-sm font-medium no-underline transition-colors ${
+            isDark
+              ? 'bg-gray-800 text-gray-300 hover:bg-gray-700 hover:text-white'
+              : 'bg-gray-100 text-gray-700 hover:bg-gray-200 hover:text-gray-900'
+          }`}
+        >
+          Contact Us
+        </a>
+      </div>
+
+      {/* Copyright */}
+      <p className={`text-xs ${isDark ? 'text-gray-500' : 'text-gray-400'}`}>
+        © 2025 Code Harmony. All rights reserved.
+      </p>
+
+      {/* Floating WhatsApp Button */}
+      <a
+        href={whatsappLink}
+        target="_blank"
+        rel="noopener noreferrer"
+        className="fixed bottom-6 right-6 w-14 h-14 bg-[#25d366] text-white rounded-full flex items-center justify-center text-2xl shadow-lg hover:scale-110 transition-transform duration-300 no-underline z-50"
+        aria-label="WhatsApp"
+      >
+        <FaWhatsapp />
+      </a>
     </footer>
   );
 }

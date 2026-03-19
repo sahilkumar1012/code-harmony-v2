@@ -37,7 +37,16 @@ export default function TestimonialSlider() {
                 &ldquo;{reviews[current].review}&rdquo;
               </p>
               <div className="flex items-center justify-center gap-3">
-                <div className={`w-10 h-10 rounded-full flex items-center justify-center text-sm font-bold ${
+                <img
+                  src={reviews[current].image}
+                  alt={reviews[current].name}
+                  className="w-12 h-12 rounded-full object-cover border-2 border-red-500"
+                  onError={(e) => {
+                    e.target.style.display = 'none';
+                    e.target.nextSibling.style.display = 'flex';
+                  }}
+                />
+                <div className={`w-12 h-12 rounded-full items-center justify-center text-sm font-bold hidden ${
                   isDark ? 'bg-red-600 text-white' : 'bg-red-100 text-red-600'
                 }`}>
                   {reviews[current].name.charAt(0)}

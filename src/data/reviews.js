@@ -1,0 +1,7 @@
+export const reviews = [
+  { name: "Dev Mangrani", review: "Great Mentor, Give So much Valuable and Practical Advise to get along with my Goals So Humble and Great Also, they share their Journey, Which is so Inspiring and Motivating", image: "/reviews/mentee/mentee-dev.webp" },
+  { name: "Dedeepya", review: "Sahil is good at listening what the mentee is really looking for.", image: "/reviews/mentee/mentee-dedeepya.webp" },
+  { name: "Arsha Lenin", review: "The session was really amazing. The advise was practical, motivating and tailored my needs which I truly appreciate. Thanks for the guidance.", image: "/reviews/mentee/profile-arsha-lenin.jpeg" },
+  { name: "Tanmay Chandekarr", review: "I liked the way Sahil explained about the preparation strategy and challenges that will come.", image: "/reviews/mentee/mentee-tanmay.webp" },
+  { name: "Anil Kumar", review: "Sahil's explanation of the preparation journey felt relatable and packed with valuable insights.", image: "/reviews/mentee/anilbedwal.jpeg" },
+];

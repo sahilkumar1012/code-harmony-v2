@@ -1,0 +1,184 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Architecture – Code Harmony v2 Docs</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+
+<!-- ── Sidebar ── -->
+<aside class="sidebar">
+  <div class="sidebar-brand">
+    <h2>Code Harmony v2</h2>
+    <span>Developer Docs</span>
+  </div>
+  <nav>
+    <span class="section-label">Documentation</span>
+    <a href="architecture.html" class="active">Architecture</a>
+    <a href="firebase-setup.html">Firebase Setup</a>
+  </nav>
+</aside>
+
+<!-- ── Main ── -->
+<div class="main">
+
+  <h1>🏗️ Architecture <span class="accent">Overview</span></h1>
+  <p class="subtitle">Component tree, data flow, and deployment pipeline for Code Harmony v2.</p>
+
+  <!-- ── Component Diagram ── -->
+  <h2>Component Diagram</h2>
+  <div class="diagram">
+    <pre><code>App (BrowserRouter)
+├── ThemeProvider (dark/light context)
+│   └── AuthProvider (Firebase Google Auth)
+│       ├── Navbar (glassmorphism, sticky)
+│       ├── Routes
+│       │   ├── / → Home
+│       │   │   ├── Hero (animated gradient, CTAs)
+│       │   │   ├── ServicesGrid (3 cards)
+│       │   │   ├── MentorShowcase (top 4 mentors)
+│       │   │   ├── TestimonialSlider (reviews carousel)
+│       │   │   ├── YouTubeSection (3 videos)
+│       │   │   └── FAQAccordion
+│       │   ├── /mentors → Mentors (filterable grid)
+│       │   ├── /dsa → DSA (roadmap + PDF viewer)
+│       │   ├── /about → About
+│       │   ├── /contact → Contact
+│       │   └── /login → Login (Google Auth)
+│       └── Footer (social links)</code></pre>
+  </div>
+
+  <!-- ── Tech Stack ── -->
+  <h2>Tech Stack</h2>
+  <table>
+    <thead>
+      <tr><th>Technology</th><th>Version / Note</th><th>Role</th></tr>
+    </thead>
+    <tbody>
+      <tr><td>React</td><td>18</td><td>UI library – component model &amp; hooks</td></tr>
+      <tr><td>Vite</td><td>latest</td><td>Dev server &amp; production bundler</td></tr>
+      <tr><td>Tailwind CSS</td><td>3</td><td>Utility-first styling</td></tr>
+      <tr><td>Firebase</td><td>Auth + Firestore + Hosting</td><td>Backend-as-a-Service</td></tr>
+      <tr><td>Framer Motion</td><td>latest</td><td>Animations &amp; transitions</td></tr>
+      <tr><td>React Router</td><td>v6</td><td>Client-side routing</td></tr>
+      <tr><td>React Icons</td><td>latest</td><td>Icon library</td></tr>
+      <tr><td>Lucide React</td><td>latest</td><td>Additional icon set</td></tr>
+    </tbody>
+  </table>
+
+  <!-- ── Data Flow ── -->
+  <h2>Data Flow</h2>
+  <p>
+    Static data lives in <code>src/data/</code> as plain JavaScript arrays/objects. Each component
+    imports directly from these files — no API calls, no Redux. Firebase is used only for
+    authentication and optional Firestore persistence.
+  </p>
+  <div class="diagram">
+    <pre><code>src/data/mentors.js ──────→ MentorShowcase, Mentors page
+src/data/reviews.js ─────→ TestimonialSlider
+src/data/faqs.js ────────→ FAQAccordion
+src/data/videos.js ──────→ YouTubeSection
+src/data/services.js ────→ ServicesGrid
+
+Firebase Auth ───────────→ AuthProvider (context)
+                              ├── Navbar (avatar / login btn)
+                              └── Login page (Google popup)</code></pre>
+  </div>
+
+  <div class="callout info">
+    <strong>💡 Tip:</strong> To add a new mentor, edit <code>src/data/mentors.js</code> and the
+    grid updates automatically — no API or database change required.
+  </div>
+
+  <!-- ── Folder Structure ── -->
+  <h2>Folder Structure</h2>
+  <pre><code>src/
+├── assets/              # Images, logos, static files
+├── components/          # Reusable UI components
+│   ├── Navbar.jsx
+│   ├── Footer.jsx
+│   ├── Hero.jsx
+│   ├── ServicesGrid.jsx
+│   ├── MentorShowcase.jsx
+│   ├── TestimonialSlider.jsx
+│   ├── YouTubeSection.jsx
+│   └── FAQAccordion.jsx
+├── context/
+│   ├── AuthContext.jsx  # Firebase auth provider
+│   └── ThemeContext.jsx # Dark / light mode
+├── data/
+│   ├── mentors.js       # Mentor profiles
+│   ├── reviews.js       # Testimonials
+│   ├── faqs.js          # FAQ entries
+│   ├── videos.js        # YouTube video IDs
+│   └── services.js      # Service cards
+├── pages/
+│   ├── Home.jsx
+│   ├── Mentors.jsx
+│   ├── DSA.jsx
+│   ├── About.jsx
+│   ├── Contact.jsx
+│   └── Login.jsx
+├── firebase.js          # Firebase config &amp; init
+├── App.jsx              # Root component + routes
+├── main.jsx             # Vite entry point
+└── index.css            # Tailwind directives + global</code></pre>
+
+  <!-- ── Deployment Pipeline ── -->
+  <h2>Deployment Pipeline</h2>
+  <p>Code Harmony v2 deploys to <strong>Firebase Hosting</strong> in three simple steps:</p>
+
+  <div class="diagram">
+    <pre><code>┌──────────────┐     ┌──────────────┐     ┌──────────────────────┐
+│  npm run     │     │   dist/      │     │  firebase deploy     │
+│  build       │ ──→ │   (static)   │ ──→ │  (Firebase Hosting)  │
+└──────────────┘     └──────────────┘     └──────────────────────┘</code></pre>
+  </div>
+
+  <ol>
+    <li>Run <code>npm run build</code> — Vite outputs optimised static files to <code>dist/</code>.</li>
+    <li>Ensure <code>firebase.json</code> has <code>"public": "dist"</code> and SPA rewrite rules.</li>
+    <li>Run <code>firebase deploy</code> — uploads <code>dist/</code> to Firebase Hosting CDN.</li>
+  </ol>
+
+  <div class="callout ok">
+    <strong>✅ Result:</strong> Live at
+    <a href="https://codeharmonyapp.web.app" target="_blank">codeharmonyapp.web.app</a>
+    with global CDN, free SSL, and instant cache invalidation.
+  </div>
+
+  <!-- ── Key Design Decisions ── -->
+  <h2>Key Design Decisions</h2>
+  <table>
+    <thead>
+      <tr><th>Decision</th><th>Rationale</th></tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>Static data files over Firestore for content</td>
+        <td>Content changes infrequently; avoids read costs and cold-start latency</td>
+      </tr>
+      <tr>
+        <td>Tailwind CSS over CSS Modules</td>
+        <td>Faster iteration, smaller bundle with purge, consistent design tokens</td>
+      </tr>
+      <tr>
+        <td>Vite over CRA / Webpack</td>
+        <td>Near-instant HMR, faster builds, native ESM support</td>
+      </tr>
+      <tr>
+        <td>Context API over Redux</td>
+        <td>Only two global states (auth + theme) — Redux would be over-engineering</td>
+      </tr>
+      <tr>
+        <td>Glassmorphism Navbar</td>
+        <td>Modern visual appeal; backdrop-filter is well-supported in target browsers</td>
+      </tr>
+    </tbody>
+  </table>
+
+</div>
+</body>
+</html>

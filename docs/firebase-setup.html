@@ -1,0 +1,267 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Firebase Setup – Code Harmony v2 Docs</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+
+<!-- ── Sidebar ── -->
+<aside class="sidebar">
+  <div class="sidebar-brand">
+    <h2>Code Harmony v2</h2>
+    <span>Developer Docs</span>
+  </div>
+  <nav>
+    <span class="section-label">Documentation</span>
+    <a href="architecture.html">Architecture</a>
+    <a href="firebase-setup.html" class="active">Firebase Setup</a>
+  </nav>
+</aside>
+
+<!-- ── Main ── -->
+<div class="main">
+
+  <h1>🔥 Firebase <span class="accent">Setup &amp; Deployment</span></h1>
+  <p class="subtitle">
+    Step-by-step guide to configure Firebase Authentication, Firestore, and Hosting
+    for Code Harmony v2.
+  </p>
+
+  <!-- ── Prerequisites ── -->
+  <h2>Prerequisites</h2>
+  <ul>
+    <li><strong>Node.js</strong> ≥ 18 and <strong>npm</strong> ≥ 9</li>
+    <li>A Google account with access to <a href="https://console.firebase.google.com" target="_blank">Firebase Console</a></li>
+    <li>The project cloned locally: <code>git clone &lt;repo-url&gt;</code></li>
+  </ul>
+
+  <!-- ── Step-by-step ── -->
+  <h2>Setup Steps</h2>
+  <div class="steps">
+
+    <!-- Step 1 -->
+    <div class="step">
+      <h3>Create a Firebase Project</h3>
+      <p>
+        Go to <a href="https://console.firebase.google.com" target="_blank">Firebase Console</a>
+        and create a new project (or use the existing <code>codeharmonyapp</code> project).
+        Disable Google Analytics if not needed — it can be added later.
+      </p>
+    </div>
+
+    <!-- Step 2 -->
+    <div class="step">
+      <h3>Enable Authentication → Google Provider</h3>
+      <p>
+        Navigate to <strong>Build → Authentication → Sign-in method</strong> and enable the
+        <strong>Google</strong> provider. Set a public-facing project name and support email.
+      </p>
+      <div class="callout info">
+        <strong>💡 Note:</strong> The app currently uses Google Sign-In only.
+        Additional providers (GitHub, email/password) can be enabled later without code changes
+        — <code>AuthContext.jsx</code> already wraps the Firebase SDK.
+      </div>
+    </div>
+
+    <!-- Step 3 -->
+    <div class="step">
+      <h3>Enable Firestore Database</h3>
+      <p>
+        Go to <strong>Build → Firestore Database</strong> and click <em>Create database</em>.
+        Choose <strong>production mode</strong> (or test mode for development). Select a region
+        close to your users (e.g., <code>us-central1</code>).
+      </p>
+    </div>
+
+    <!-- Step 4 -->
+    <div class="step">
+      <h3>Install Firebase CLI</h3>
+      <pre><code>npm install -g firebase-tools</code></pre>
+      <p>Verify the installation:</p>
+      <pre><code>firebase --version</code></pre>
+    </div>
+
+    <!-- Step 5 -->
+    <div class="step">
+      <h3>Login to Firebase</h3>
+      <pre><code>firebase login</code></pre>
+      <p>This opens a browser window for Google authentication. Once authenticated, the CLI
+         is linked to your Firebase account.</p>
+    </div>
+
+    <!-- Step 6 -->
+    <div class="step">
+      <h3>Create the <code>.env</code> File</h3>
+      <p>
+        In the project root, create a <code>.env</code> file with your Firebase configuration
+        values. You can find these in Firebase Console → Project Settings → General → Your apps
+        → Web app → Config.
+      </p>
+      <pre><code>VITE_FIREBASE_API_KEY=AIzaSy...
+VITE_FIREBASE_AUTH_DOMAIN=codeharmonyapp.firebaseapp.com
+VITE_FIREBASE_PROJECT_ID=codeharmonyapp
+VITE_FIREBASE_STORAGE_BUCKET=codeharmonyapp.appspot.com
+VITE_FIREBASE_MESSAGING_SENDER_ID=123456789
+VITE_FIREBASE_APP_ID=1:123456789:web:abcdef</code></pre>
+      <div class="callout warn">
+        <strong>⚠️ Important:</strong> Never commit <code>.env</code> to version control.
+        Ensure it is listed in <code>.gitignore</code>.
+      </div>
+    </div>
+
+    <!-- Step 7 -->
+    <div class="step">
+      <h3>Build the Project</h3>
+      <pre><code>npm run build</code></pre>
+      <p>
+        Vite compiles the app into optimised static files in the <code>dist/</code> directory.
+      </p>
+    </div>
+
+    <!-- Step 8 -->
+    <div class="step">
+      <h3>Deploy to Firebase Hosting</h3>
+      <pre><code>firebase deploy</code></pre>
+      <p>
+        This uploads <code>dist/</code> to Firebase Hosting. After deployment, your site is
+        live at <code>https://codeharmonyapp.web.app</code>.
+      </p>
+      <div class="callout ok">
+        <strong>✅ Done!</strong> Your site is now live with global CDN, free SSL, and automatic
+        cache invalidation.
+      </div>
+    </div>
+
+    <!-- Step 9 -->
+    <div class="step">
+      <h3>Custom Domain Setup (Optional)</h3>
+      <p>
+        In Firebase Console → Hosting → <em>Add custom domain</em>, enter your domain
+        (e.g., <code>codeharmony.in</code>). Firebase provides DNS records (A / CNAME) to add
+        at your domain registrar. SSL is provisioned automatically.
+      </p>
+    </div>
+
+  </div>
+
+  <!-- ── Environment Variables ── -->
+  <h2>Environment Variables Reference</h2>
+  <table>
+    <thead>
+      <tr><th>Variable</th><th>Description</th><th>Where to Find</th></tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><code>VITE_FIREBASE_API_KEY</code></td>
+        <td>Public API key for Firebase SDK</td>
+        <td>Project Settings → General</td>
+      </tr>
+      <tr>
+        <td><code>VITE_FIREBASE_AUTH_DOMAIN</code></td>
+        <td>Auth domain for Google Sign-In popup</td>
+        <td>Project Settings → General</td>
+      </tr>
+      <tr>
+        <td><code>VITE_FIREBASE_PROJECT_ID</code></td>
+        <td>Unique project identifier</td>
+        <td>Project Settings → General</td>
+      </tr>
+      <tr>
+        <td><code>VITE_FIREBASE_STORAGE_BUCKET</code></td>
+        <td>Cloud Storage bucket URL</td>
+        <td>Project Settings → General</td>
+      </tr>
+      <tr>
+        <td><code>VITE_FIREBASE_MESSAGING_SENDER_ID</code></td>
+        <td>Cloud Messaging sender ID</td>
+        <td>Project Settings → Cloud Messaging</td>
+      </tr>
+      <tr>
+        <td><code>VITE_FIREBASE_APP_ID</code></td>
+        <td>Firebase app identifier</td>
+        <td>Project Settings → General</td>
+      </tr>
+    </tbody>
+  </table>
+
+  <!-- ── Local Development ── -->
+  <h2>Local Development</h2>
+  <p>Start the Vite dev server with hot module replacement:</p>
+  <pre><code>npm install      # install dependencies (first time only)
+npm run dev       # starts dev server at http://localhost:5173</code></pre>
+
+  <p>
+    The dev server reads <code>.env</code> automatically. Any file change triggers instant HMR
+    in the browser — no full reload required.
+  </p>
+
+  <div class="callout info">
+    <strong>💡 Tip:</strong> Use <code>firebase emulators:start</code> to run Auth and Firestore
+    locally without touching production data.
+  </div>
+
+  <!-- ── firebase.json ── -->
+  <h2>firebase.json Configuration</h2>
+  <p>Ensure your <code>firebase.json</code> includes SPA rewrite rules for React Router:</p>
+  <pre><code>{
+  "hosting": {
+    "public": "dist",
+    "ignore": ["firebase.json", "**/.*", "**/node_modules/**"],
+    "rewrites": [
+      {
+        "source": "**",
+        "destination": "/index.html"
+      }
+    ]
+  }
+}</code></pre>
+
+  <!-- ── CI/CD ── -->
+  <h2>CI/CD with GitHub Actions (Optional)</h2>
+  <p>
+    Automate deployments by adding a GitHub Actions workflow. Firebase provides a built-in
+    setup command:
+  </p>
+  <pre><code>firebase init hosting:github</code></pre>
+  <p>This creates two workflow files in <code>.github/workflows/</code>:</p>
+  <ul>
+    <li><strong>firebase-hosting-pull-request.yml</strong> — deploys a preview on every PR</li>
+    <li><strong>firebase-hosting-merge.yml</strong> — deploys to production on merge to <code>main</code></li>
+  </ul>
+
+  <div class="callout">
+    <strong>🔑 Secret required:</strong> The workflow needs a
+    <code>FIREBASE_SERVICE_ACCOUNT_CODEHARMONYAPP</code> secret in your GitHub repo settings.
+    The <code>firebase init</code> command can create and configure this automatically.
+  </div>
+
+  <h3>Manual Workflow Example</h3>
+  <pre><code>name: Deploy to Firebase Hosting
+on:
+  push:
+    branches: [main]
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: npm
+      - run: npm ci
+      - run: npm run build
+      - uses: FirebaseExtended/action-hosting-deploy@v0
+        with:
+          repoToken: ${{ secrets.GITHUB_TOKEN }}
+          firebaseServiceAccount: ${{ secrets.FIREBASE_SERVICE_ACCOUNT_CODEHARMONYAPP }}
+          channelId: live
+          projectId: codeharmonyapp</code></pre>
+
+</div>
+</body>
+</html>

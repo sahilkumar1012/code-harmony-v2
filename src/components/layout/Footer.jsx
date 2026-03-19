@@ -3,12 +3,12 @@ import { FaXTwitter } from 'react-icons/fa6';
 import { useTheme } from '../../context/ThemeContext';
 
 const socialLinks = [
-  { icon: FaLinkedinIn, href: 'https://www.linkedin.com/company/codeharmonydev/', label: 'LinkedIn', hoverColor: 'hover:text-[#0077B5]' },
-  { icon: FaXTwitter, href: 'https://x.com/codeharmonyHQ', label: 'X', hoverColor: 'hover:text-white' },
-  { icon: FaYoutube, href: 'https://youtube.com/@CodeHarmonydev', label: 'YouTube', hoverColor: 'hover:text-[#FF0000]' },
-  { icon: FaDiscord, href: 'https://discord.gg/p3vtnzFbn5', label: 'Discord', hoverColor: 'hover:text-[#7289DA]' },
-  { icon: FaInstagram, href: 'https://instagram.com/codeharmony.dev', label: 'Instagram', hoverColor: 'hover:text-[#E4405F]' },
-  { icon: FaTelegramPlane, href: 'https://t.me/codeharmonydev', label: 'Telegram', hoverColor: 'hover:text-[#0088cc]' },
+  { icon: FaLinkedinIn, href: 'https://www.linkedin.com/company/codeharmonydev/', label: 'LinkedIn', color: '#0077B5' },
+  { icon: FaXTwitter, href: 'https://x.com/codeharmonyHQ', label: 'X', color: null },
+  { icon: FaYoutube, href: 'https://youtube.com/@CodeHarmonydev', label: 'YouTube', color: '#FF0000' },
+  { icon: FaDiscord, href: 'https://discord.gg/p3vtnzFbn5', label: 'Discord', color: '#7289DA' },
+  { icon: FaInstagram, href: 'https://instagram.com/codeharmony.dev', label: 'Instagram', color: '#E4405F' },
+  { icon: FaTelegramPlane, href: 'https://t.me/codeharmonydev', label: 'Telegram', color: '#0088cc' },
 ];
 
 const whatsappLink = 'https://wa.me/919876543210';
@@ -19,17 +19,23 @@ export default function Footer() {
   return (
     <footer className={`py-6 text-center ${isDark ? 'bg-gray-950' : 'bg-white'}`}>
       {/* Social Icons Row */}
-      <div className="flex justify-center items-center gap-4 mb-4">
+      <div className="flex justify-center items-center gap-5 mb-4">
         {socialLinks.map((social) => (
           <a
             key={social.label}
             href={social.href}
             target="_blank"
             rel="noopener noreferrer"
-            className={`text-2xl transition-transform duration-300 hover:scale-125 no-underline ${
-              isDark ? 'text-gray-400' : 'text-gray-500'
-            } ${social.hoverColor}`}
+            className="no-underline"
             aria-label={social.label}
+            style={{
+              color: social.color || (isDark ? '#fff' : '#000'),
+              fontSize: '1.75rem',
+              transition: 'transform 0.3s ease-in-out',
+              display: 'flex',
+            }}
+            onMouseEnter={e => e.currentTarget.style.transform = 'scale(1.3)'}
+            onMouseLeave={e => e.currentTarget.style.transform = 'scale(1)'}
           >
             <social.icon />
           </a>
